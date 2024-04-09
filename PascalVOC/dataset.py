@@ -24,10 +24,10 @@ class PascalVOC(Dataset):
         for path in all_path:
             class_name = os.path.basename(path).split('_')[0]
             temp_df = pd.read_csv(path, sep= '\s+', names= ['image', class_name], dtype= {'image': str})
-            if df is None:
-                df = temp_df
+            if self.df is None:
+                self.df = temp_df
             else:
-                df = pd.merge(df, temp_df, on= 'image', how= 'outer')
+                self.df = pd.merge(self.df, temp_df, on= 'image', how= 'outer')
         self.df.replace(-1, 0, inplace= True)
 
     def __getitem__(self, index):

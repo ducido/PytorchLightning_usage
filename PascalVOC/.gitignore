@@ -2,3 +2,5 @@ __pycache__
 archive*
 lightning_logs
 token.txt
+logger
+.gitignore
