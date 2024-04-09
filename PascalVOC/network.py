@@ -4,6 +4,7 @@ import pytorch_lightning as pl
 from torch.nn import functional as F
 import torch
 import torchmetrics
+import torchvision
 
 class Resnet(nn.Module):
     def __init__(self, num_classes):
@@ -83,6 +84,11 @@ class Resnet_LN(pl.LightningModule):
         pred = self.forward(x)
         loss = F.binary_cross_entropy_with_logits(pred, y)
         self.log_dict({'train_loss': loss}, on_epoch= True, prog_bar= True)
+
+        if batch_idx % 10 == 0:
+            x = x[:4]
+            grid = torchvision.utils.make_grid(x)
+            self.logger.experiment.add_image("some images", grid, self.global_step)
         return loss
 
     def validation_step(self, batch, batch_idx):
